@@ -4,6 +4,8 @@ import RoomSkeleton from "../components/RoomSeleton";
 import { useQuery } from "@tanstack/react-query"
 import { getRooms } from "../api";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { IRoomList } from "../types";
 
 interface IPhoto {
   pk: string;
@@ -23,7 +25,7 @@ interface IRoom {
 }
 
 export default function Home() {
-  const { isLoading, data } = useQuery<IRoom[]>(["rooms"], getRooms);
+  const { isLoading, data } = useQuery<IRoomList[]>(["rooms"], getRooms);
   return (
     <Grid
       mt={10}
@@ -57,7 +59,8 @@ export default function Home() {
         <Room
           key={room.pk}
           pk={room.pk}
-          imageUrl={room.photos[0].file}
+          isOwner={room.is_owner}
+          imageUrl={room.photos[0]?.file}
           name={room.name}
           rating={room.rating}
           city={room.city}
